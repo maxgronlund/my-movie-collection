@@ -1,0 +1,8 @@
+.img-fill-column {
+  width: 100%;
+  /* Ensure the image is full width */
+  height: auto;
+  /* Adjust height automatically to maintain aspect ratio */
+  object-fit: cover;
+  /* Cover the container without losing aspect ratio */
+}

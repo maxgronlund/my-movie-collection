@@ -1,0 +1,10 @@
+.container
+  header.pb-3.mb-4.border-bottom
+    .row
+      .col
+        .fs-1 Users
+.container.mt-2
+  .row.g-4
+    - @users.each do |user|
+      .col-6.col-sm-4.col-md-3.col-lg-2
+        == render user 

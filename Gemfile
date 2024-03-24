@@ -55,8 +55,10 @@ gem 'slim-rails'
 # Use Devise for authentication
 gem 'devise', '~> 4.9.3'
 
-# gem 'loggable_activity', '~> 0.1.54', path: '/Users/maxgronlund/Documents/Max/open-source/LoggableActivity'
+# Use httparty of HTTP requests
+gem 'httparty', '~> 0.21.0'
 
+# gem 'loggable_activity', '~> 0.1.54', path: '/Users/maxgronlund/Documents/Max/open-source/LoggableActivity'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -65,7 +67,8 @@ group :development, :test do
   gem 'awesome_print'
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'debug', platforms: %i[mri windows]
+  gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3'
+  gem 'faker'
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.59'
   gem 'rubocop-discourse', '~> 3.6'
@@ -81,10 +84,15 @@ group :development do
   # gem "spring"
 
   gem 'error_highlight', '>= 0.4.0', platforms: [:ruby]
+
+  # Add a comment summarizing the current schema to the top models
+  gem 'annotate', '~> 3.2'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
   gem 'selenium-webdriver'
+  gem 'webmock', require: false
 end

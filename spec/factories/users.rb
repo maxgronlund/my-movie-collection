@@ -15,10 +15,11 @@
 #  updated_at             :datetime         not null
 #  avatar                 :string
 #
-require 'test_helper'
-
-class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+FactoryBot.define do
+  factory :user do
+    sequence(:email) { |n| "user#{n}@example.com" }
+    password { 'password123' }
+    password_confirmation { 'password123' }
+    username { Faker::Name.name }
+  end
 end
