@@ -1,0 +1,12 @@
+= link_to user_movie_path(movie.user, movie), class: "text-decoration-none"
+  .card.h-100.flex-fill
+    img.card-img-top[src=movie.Poster alt=movie.Title]
+    .card-body
+      h5.card-title= movie.Title
+      i.fw-light= movie_info(movie)
+      p.card-text.mt-2= truncate(movie.Plot, length: 75, omission: '...')
+    .card-footer.text-muted
+      .fs-5 = star_rating(movie.imdbRating.to_f)
+
+    / = link_to "Edit", edit_movie_path(movie), class: "btn btn-secondary"
+    / = link_to "Delete", movie, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger"

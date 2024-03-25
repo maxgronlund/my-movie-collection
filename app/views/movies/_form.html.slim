@@ -1,0 +1,32 @@
+.container
+  .row.justify-content-center
+    .col-md-8
+      .card.mt-5
+        .card-header
+          h3 = label 
+        .card-body
+          = form_with(model:  [ @user, movie ]) do |form|
+            - if movie.errors.any?
+              .alert.alert-danger
+                h4 = pluralize(movie.errors.count, "error") + " prohibited this movie from being saved:"
+                ul
+                  - movie.errors.full_messages.each do |message|
+                    li = message
+            = form.hidden_field :user_id, value: @user.id
+            .mt-2
+              - if movie.persisted?
+                = form.label :Title, style: "display: block"
+                = form.text_field :Title, disabled: true, class: 'form-control'
+              - else
+                = form.label :Title, style: "display: block"
+                = form.text_field :Title, class: 'form-control'
+              / = form.text_field :Title, autofocus: true, autocomplete: "Title", class: 'form-control'
+
+            - if movie.persisted?
+              .mt-2 
+                = form.label :review, style: "display: block"
+                = form.text_field :review, class: 'form-control'
+                = form.rich_text_area :review
+            .mt-2
+              = form.submit 'Save', class: 'btn btn-primary'
+

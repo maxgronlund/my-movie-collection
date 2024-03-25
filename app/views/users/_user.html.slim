@@ -1,0 +1,10 @@
+= link_to user_path(user), class: "text-decoration-none"
+  .card.h-100.flex-fill
+    img.card-img-top[src=user.avatar alt=user.username]
+    .card-body
+      h5.card-title= user.username 
+      / i.fw-light= movie_info(movie)
+      / p.card-text.mt-2= truncate(movie.Plot, length: 75, omission: '...')
+    .card-footer.text-muted
+      = "movies: #{user.movies.count}"
+      / .fs-5 = star_rating(movie.imdbRating.to_f)

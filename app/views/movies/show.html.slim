@@ -1,0 +1,49 @@
+section.bg-black.text-white.py-5
+  .container-fluid
+    .container
+      .row
+        .col-md-4
+          img.img-fluid.img-fill-column[src=@movie.Poster alt=@movie.Title]
+          br/
+        .col-md-8.p-4
+          .text-center
+            .display-4.fw-bold = @movie.Title 
+            i = movie_info(@movie)
+            .mt-5 
+              - if @movie.Director.present?
+                | Directed by
+                .fs-3 = @movie.Director
+              - if @movie.Actors.present?
+                | Starring
+                .fs-3 = @movie.Actors
+              - if @movie.Writer.present?
+                | Written by
+                p.fs-3 = @movie.Writer
+              | Ratings on IMDB
+              .fs-2 = star_rating(@movie.imdbRating.to_f)
+              .mt-3
+                | Awards
+                p.fs-4 = @movie.Awards
+      .row.mt-3
+        .col 
+          p.fs-5 = @movie.Plot
+      - if @movie.user == @user
+        .row.mt-3
+          .col
+            = link_to 'Edit', edit_user_movie_path(@movie.user, @movie), class: 'btn btn-outline-primary'
+            =< link_to 'Delete', user_movie_path(@movie.user, @movie), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' 
+.container.mt-4
+  table.table
+    thead 
+      tr
+        th
+        th 
+    tbody
+      tr 
+        th Uploaded by
+        td = link_to @movie.user.username, user_path(@movie.user), class: 'text-decoration-none'
+      tr 
+        th Date uploaded
+        td = @movie.created_at.strftime("%B %d, %Y")
+.container.mt-4 
+  = @movie.review

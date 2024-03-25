@@ -1,0 +1,14 @@
+.container
+  header.pb-3.mb-4.border-bottom
+    .row
+      .col-md-1
+        - if @user.avatar.present?
+          = image_tag @user.avatar, alt: "User #{@user.username} avatar", class: 'img-fluid'
+      .col-md-11
+        .fs-1
+          = @user.username
+.container
+  .row.g-4
+    - @user.movies.each do |movie|
+      .col-12.col-sm-6.col-md-4.col-lg-3
+        == render movie 
