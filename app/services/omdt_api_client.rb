@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# OMDB API Client, responsible for fetching movie data from the OMDB API
 module OmdtApiClient
   require 'httparty'
   include HTTParty
@@ -20,7 +21,7 @@ module OmdtApiClient
   base_uri 'http://www.omdbapi.com/'
 
   def self.fetch_movie_by_form_inputs(title:, plot: 'short')
-    api_key = ENV['THEMOVIEDB_API_KEY']
+    api_key = ENV.fetch('THEMOVIEDB_API_KEY', nil)
     options = { query: { t: title, plot:, apikey: api_key } }
 
     response = get('/', options)
@@ -30,6 +31,6 @@ module OmdtApiClient
   end
 
   def self.api_key
-    ENV['OMDB_API_KEY']
+    ENV.fetch('OMDB_API_KEY', nil)
   end
 end

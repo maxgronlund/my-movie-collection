@@ -22,6 +22,11 @@
                 = form.text_field :Title, class: 'form-control'
               / = form.text_field :Title, autofocus: true, autocomplete: "Title", class: 'form-control'
 
+            - if movie.persisted?
+              .mt-2 
+                = form.label :review, style: "display: block"
+                = form.text_field :review, class: 'form-control'
+                = form.rich_text_area :review
             .mt-2
               = form.submit 'Save', class: 'btn btn-primary'
 

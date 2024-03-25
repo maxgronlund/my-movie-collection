@@ -14,7 +14,6 @@ Nice to have
 - direnv
 - asdf
 
-
 ### Configuration
 Environment variables
 ```
@@ -49,12 +48,17 @@ $ rake db:migrate
 $ rake db:seed
 ```
 ### Test
+
 How to run the test suite
 ```
 $ bundle exec rspec .
 ```
-The project is using webmock for some of the tests.
+- The project is using webmock for some of the tests.
+- For test coverage look at the `/coverage/index.html` file
+
 
 ### Acknowledgement
 - Avatars is fetched from [dicebear](https://www.dicebear.com/styles/adventurer/)
 
+### Notes
+- DB fields with uppercase names is due to a one to one relation between omdb payloads and the movie model.

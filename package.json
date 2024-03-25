@@ -9,5 +9,13 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "postcss": "^8.4.38",
+    "postcss-cli": "^11.0.0",
+    "sass": "^1.72.0"
+  }
 }

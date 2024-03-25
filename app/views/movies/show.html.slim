@@ -27,6 +27,11 @@ section.bg-black.text-white.py-5
       .row.mt-3
         .col 
           p.fs-5 = @movie.Plot
+      - if @movie.user == @user
+        .row.mt-3
+          .col
+            = link_to 'Edit', edit_user_movie_path(@movie.user, @movie), class: 'btn btn-outline-primary'
+            =< link_to 'Delete', user_movie_path(@movie.user, @movie), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' 
 .container.mt-4
   table.table
     thead 
@@ -40,3 +45,5 @@ section.bg-black.text-white.py-5
       tr 
         th Date uploaded
         td = @movie.created_at.strftime("%B %d, %Y")
+.container.mt-4 
+  = @movie.review

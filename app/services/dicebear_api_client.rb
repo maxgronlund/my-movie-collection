@@ -5,7 +5,7 @@ module DicebearApiClient
   require 'fileutils'
   include HTTParty
   AVATARS_DIR = Rails.root.join('public', 'assets', 'avatars')
-  FileUtils.mkdir_p(AVATARS_DIR) unless Dir.exist?(AVATARS_DIR)
+  FileUtils.mkdir_p(AVATARS_DIR)
 
   ADVENTURES = %w[
     Felix
@@ -46,7 +46,6 @@ module DicebearApiClient
   def self.fetch_avatar(user, _style = 'adventurer')
     avatar = ADVENTURES.sample
     response = get("https://api.dicebear.com/8.x/adventurer/svg?seed=#{avatar}")
-    # ap response.parsed_response
     save_avatar(user, response.parsed_response)
   end
 
@@ -57,9 +56,7 @@ module DicebearApiClient
     # Ensure the svg_content is treated as UTF-8
     svg_content.force_encoding('UTF-8')
 
-    File.open(filepath, 'w') do |file|
-      file.write(svg_content)
-    end
+    File.write(filepath, svg_content)
 
     # Update the user's avatar URL assuming `public/assets/avatars/` is served under `/assets/avatars/`
     user.update(avatar: "/assets/avatars/#{filename}")

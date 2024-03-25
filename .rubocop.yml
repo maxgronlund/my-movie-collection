@@ -1,0 +1,62 @@
+# .rubocop.yml
+
+# AllCops settings
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*' 
+    - 'db/**/*' 
+    - 'bin/bundle'
+
+Style/Encoding:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
+Style/GlobalVars:
+  Enabled: true
+
+Layout/IndentationWidth:
+  Enabled: true
+  Width: 2
+
+Layout/TrailingWhitespace:
+  Enabled: true
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*' 
+    - 'config/**/*' 
+    - 'db/**/*' 
+
+Layout/LineLength:
+  Enabled: true
+  Max: 120
+  Exclude:
+    - 'config/initializers/devise.rb'
+    - 'spec/helpers/movies_helper_spec.rb'
+
+Naming/FileName:
+  Enabled: true
+
+Naming/VariableName:
+  Enabled: true
+
+Lint/RedundantCopDisableDirective:
+  Enabled: true
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/movies_controller.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/helpers/movies_helper.rb'

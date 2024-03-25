@@ -22,19 +22,33 @@ class MoviesController < ApplicationController
   # POST /movies or /movies.json
   def create
     api_response = OmdbApiClient.fetch_movie_by_form_inputs(title: movie_params[:Title])
+    handle_api_response(api_response)
+  end
 
+  private
+
+  def handle_api_response(api_response)
     if api_response['Response'] == 'False'
-      redirect_to new_user_movie_path(current_user), alert: api_response['Error']
+      redirect_to_new_movie_with_error(api_response['Error'])
     else
-      @movie = current_user.movies.build(movie_params(api_response))
-
-      if @movie.save
-        redirect_to [@movie.user, @movie]
-      else
-        render :new, status: :unprocessable_entity
-      end
+      create_movie(api_response)
     end
   end
+
+  def redirect_to_new_movie_with_error(error)
+    redirect_to new_user_movie_path(current_user), alert: error
+  end
+
+  def create_movie(api_response)
+    @movie = current_user.movies.build(movie_params(api_response))
+    if @movie.save
+      redirect_to [@movie.user, @movie]
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  public
 
   # PATCH/PUT /movies/1 or /movies/1.json
   def update
@@ -80,30 +94,11 @@ class MoviesController < ApplicationController
     else
       params.require(:movie)
             .permit(
-              :user_id,
-              :Title,
-              :Year,
-              :Rated,
-              :Released,
-              :Runtime,
-              :Genre,
-              :Director,
-              :Writer,
-              :Actors,
-              :Plot,
-              :Language,
-              :Country,
-              :Awards,
-              :Poster,
-              :Metascore,
-              :imdbRating,
-              :imdbVotes,
-              :imdbID,
-              :Type,
-              :DVD,
-              :BoxOffice,
-              :Production,
-              :Website
+              :user_id, :Title, :Year, :Rated, :Released,
+              :Runtime, :Genre, :Director, :Writer, :Actors, :Plot,
+              :Language, :Country, :Awards, :Poster, :Metascore,
+              :imdbRating, :imdbVotes, :imdbID, :Type, :DVD, :BoxOffice,
+              :Production, :Website, :review
             )
     end
   end

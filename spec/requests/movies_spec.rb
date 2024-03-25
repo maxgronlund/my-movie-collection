@@ -67,23 +67,24 @@ RSpec.describe '/movies', type: :request do
 
   describe 'POST /create' do
     let(:title) { 'Twister' }
-    let(:api_key) { ENV['OMDB_API_KEY'] }
+    let(:api_key) { ENV.fetch('OMDB_API_KEY', nil) }
     let(:plot) { 'full' }
     let(:omdb_response_path) { Rails.root.join('spec', 'support', 'fixtures', 'omdb_response.json') }
     let(:mock_response) { File.read(omdb_response_path) }
 
     before do
-       stub_request(:get, "http://www.omdbapi.com/?apikey=#{api_key}&plot=short&t=").
-         with(
-           headers: {
-       	  'Accept'=>'*/*',
-       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	  'User-Agent'=>'Ruby'
-           }).
-         to_return(status: 200, body: mock_response, headers: {})
+      stub_request(:get, "http://www.omdbapi.com/?apikey=#{api_key}&plot=short&t=")
+        .with(
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent' => 'Ruby'
+          }
+        )
+        .to_return(status: 200, body: mock_response, headers: {})
 
       allow(ENV).to receive(:[]).and_call_original # Allow all ENV calls to proceed normally
-      allow(ENV).to receive(:[]).with("OMDB_API_KEY").and_return(api_key)
+      allow(ENV).to receive(:[]).with('OMDB_API_KEY').and_return(api_key)
     end
 
     before(:each) do

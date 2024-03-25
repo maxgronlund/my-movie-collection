@@ -2,6 +2,14 @@
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter '/app/channels/application_cable/channel.rb'
+  add_filter '/app/channels/application_cable/connection.rb'
+  add_filter '/app/jobs/application_job.rb'
+  add_filter '/app/mailers/application_mailer.rb'
+  add_filter '/app/services/omdt_api_client.rb'
+end
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -67,4 +75,10 @@ RSpec.configure do |config|
 
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include FactoryBot::Syntax::Methods
+end
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
