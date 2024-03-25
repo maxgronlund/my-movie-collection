@@ -4,6 +4,9 @@
 require 'spec_helper'
 require 'simplecov'
 SimpleCov.start 'rails' do
+  add_filter 'app/services/dicebear_api_client.rb'
+  add_filter 'app/controllers/users/sessions_controller.rb'
+  add_filter '/app/controllers/application_controller.rb'
   add_filter '/app/channels/application_cable/channel.rb'
   add_filter '/app/channels/application_cable/connection.rb'
   add_filter '/app/jobs/application_job.rb'
