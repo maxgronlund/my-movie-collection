@@ -22,15 +22,10 @@ RSpec.describe '/movies', type: :request do
   let(:user) { create(:user) }
   let(:movie) { create(:movie, user:) }
   let(:movies) { FactoryBot.create_list(:movie, 5, user:) }
-  # let(:valid_attributes) {
-  #   omdb_response_path = Rails.root.join('spec', 'support', 'fixtures', 'omdb_response.json')
-  #   response = JSON.parse(File.read(omdb_response_path))
-  #   # skip("Add a hash of attributes valid for your model")
-  # }
-  let(:valid_attributes) { { plot: 'full', title: 'Twister' } }
+  let(:valid_attributes) { { review: 'fo' } }
 
   let(:invalid_attributes) do
-    { plot: 'full', title: 'Olsen Bandens Far til 4' }
+    { Title: 'NOT A MOVIE XYZ' }
   end
 
   before(:each) do
@@ -103,11 +98,32 @@ RSpec.describe '/movies', type: :request do
         expect(response).to redirect_to(user_movie_url(user, Movie.last))
       end
     end
+  end
+
+  describe 'POST /create with invalid attributes' do
+    let(:api_key) { ENV.fetch('OMDB_API_KEY', nil) }
+    # let(:omdb_response_path) { Rails.root.join('spec', 'support', 'fixtures', 'omdb_response.json') }
+    let(:mock_response) { { 'Response' => 'False' }.to_json }
+
+    before do
+      stub_request(:get, 'http://www.omdbapi.com/?apikey=d661ea05&plot=short&t=NOT%20A%20MOVIE%20XYZ')
+        .with(
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent' => 'Ruby'
+          }
+        )
+        .to_return(status: 200, body: { 'Response' => 'False' }.to_json, headers: {})
+
+      allow(ENV).to receive(:[]).and_call_original # Allow all ENV calls to proceed normally
+      allow(ENV).to receive(:[]).with('OMDB_API_KEY').and_return(api_key)
+    end
 
     context 'with invalid parameters' do
       it 'does not create a new Movie' do
         expect do
-          post movies_url, params: { movie: invalid_attributes }
+          post user_movies_url(user), params: { movie: invalid_attributes }
         end.to change(Movie, :count).by(0)
       end
 
@@ -118,37 +134,73 @@ RSpec.describe '/movies', type: :request do
     end
   end
 
-  # describe "PATCH /update" do
-  #   context "with valid parameters" do
-  #     let(:new_attributes) {
-  #       skip("Add a hash of attributes valid for your model")
-  #     }
+  describe 'POST /create' do
+    # let(:api_key) { ENV.fetch('OMDB_API_KEY', nil) }
+    # let(:plot) { 'full' }
 
-  #     it "updates the requested movie" do
-  #       movie = Movie.create! valid_attributes
-  #       patch movie_url(movie), params: { movie: new_attributes }
-  #       movie.reload
-  #       skip("Add assertions for updated state")
-  #     end
+    before do
+      stub_request(:get, 'http://www.omdbapi.com/?apikey=d661ea05&plot=short&t=NOT%20A%20MOVIE%20XYZ')
+        .with(
+          headers: {
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent' => 'Ruby'
+          }
+        )
+        .to_return(status: 200, body: { fo: 'bar' }.to_json, headers: {})
 
-  #     it "redirects to the movie" do
-  #       movie = Movie.create! valid_attributes
-  #       patch movie_url(movie), params: { movie: new_attributes }
-  #       movie.reload
-  #       expect(response).to redirect_to(movie_url(movie))
-  #     end
-  #   end
+      # allow(ENV).to receive(:[]).and_call_original # Allow all ENV calls to proceed normally
+      # allow(ENV).to receive(:[]).with('OMDB_API_KEY').and_return(api_key)
+    end
 
-  #   context "with invalid parameters" do
+    context 'with invalid API response' do
+      it 'does not create a new Movie' do
+        expect do
+          post user_movies_url(user), params: { movie: invalid_attributes }
+        end.to change(Movie, :count).by(0)
+      end
 
-  #     it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-  #       movie = Movie.create! valid_attributes
-  #       patch movie_url(movie), params: { movie: invalid_attributes }
-  #       expect(response).to have_http_status(:unprocessable_entity)
-  #     end
+      it "renders a response with 422 status (i.e. to display the 'new' template)" do
+        post movies_url, params: { movie: invalid_attributes }
+        expect(response).to have_http_status(:found)
+      end
+    end
+  end
 
-  #   end
-  # end
+  describe 'PATCH /update' do
+    context 'with valid parameters' do
+      let(:user) { create(:user) }
+      let(:movie) { create(:movie, user:) }
+      let(:paragraph) { Faker::Lorem.paragraph }
+      let(:new_attributes) do
+        { review: paragraph }
+      end
+
+      before(:each) do
+        sign_in user
+      end
+
+      it 'updates the requested movie' do
+        patch user_movie_url(user, movie), params: { movie: new_attributes }
+        movie.reload
+        expect(movie.review).to eq(paragraph)
+      end
+
+      it 'redirects to the movie' do
+        patch user_movie_url(user, movie), params: { movie: new_attributes }
+        movie.reload
+        expect(response).to redirect_to(user_movie_url(user, movie))
+      end
+    end
+
+    context 'with invalid parameters' do
+      it "renders a response with 422 status (i.e. to display the 'edit' template)" do
+        patch user_movie_url(user, movie), params: { movie: { Title: nil, Year: '2000' } }
+        movie.reload
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 
   describe 'DELETE /destroy' do
     it 'destroys the requested movie' do

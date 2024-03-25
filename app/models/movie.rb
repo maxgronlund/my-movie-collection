@@ -34,4 +34,5 @@
 #
 class Movie < ApplicationRecord
   belongs_to :user
+  validates :Title, presence: true
 end
