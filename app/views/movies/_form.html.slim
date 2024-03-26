@@ -24,8 +24,7 @@
             - if movie.persisted?
               .mt-2 
                 = form.label :review, style: "display: block"
-                = form.text_field :review, class: 'form-control'
-                = form.rich_text_area :review
+                = form.text_area :review, class: 'form-control', rows: 15
             .mt-2
               = form.submit 'Save', class: 'btn btn-primary'
 

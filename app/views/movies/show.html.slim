@@ -31,7 +31,7 @@ section.bg-black.text-white.py-5
         .row.mt-3
           .col
             = link_to 'Edit', edit_user_movie_path(@movie.user, @movie), class: 'btn btn-outline-primary'
-            =< link_to 'Delete', user_movie_path(@movie.user, @movie), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' 
+            =< link_to 'Delete', user_movie_path(@movie.user, @movie), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn btn-outline-danger' 
 .container.mt-4
   table.table
     thead 
@@ -46,4 +46,5 @@ section.bg-black.text-white.py-5
         th Date uploaded
         td = @movie.created_at.strftime("%B %d, %Y")
 .container.mt-4 
+  .fs-4 Review
   = @movie.review

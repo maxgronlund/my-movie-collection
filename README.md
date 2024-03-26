@@ -9,10 +9,11 @@ I just had a fun time, and like to **practicing** my skills, so please forgive m
 - Ruby 3.2
 - Rails 7
 - Postgresql
+- Google Chriome
 
 Nice to have
-- direnv
-- asdf
+- direnv, for environment variables
+- asdf, for version management
 
 ### Configuration
 Environment variables
