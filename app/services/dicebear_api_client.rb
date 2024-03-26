@@ -44,9 +44,12 @@ module DicebearApiClient
   ].freeze
 
   def self.fetch_avatar(user, _style = 'adventurer')
-    avatar = ADVENTURES.sample
+    avatar = Rails.env.test? ? 'Cookie' : ADVENTURES.sample
     response = get("https://api.dicebear.com/8.x/adventurer/svg?seed=#{avatar}")
+
     save_avatar(user, response.parsed_response)
+  rescue NoMethodError
+    user.errors.add(:avatar, ActionController::Base.helpers.asset_path('default-avetar.svg'))
   end
 
   def self.save_avatar(user, svg_content)

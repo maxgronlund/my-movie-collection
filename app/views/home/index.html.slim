@@ -1,4 +1,9 @@
-.container
-  h1 Home#index
+.container.py-5
+  .p-5.mb-4.bg-body-secondary.rounded-3
+    display-5.fw-bold
+      h1 My Movie Collection 
 
-  p Find me in app/views/home/index.html.slim
+    col-md-8.fs-4
+      p Save the moview you have watched and share your review with the community.
+    - unless user_signed_in?
+      = link_to 'Create account', new_user_registration_path, class: 'btn btn-lg btn-primary'

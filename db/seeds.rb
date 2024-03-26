@@ -130,7 +130,6 @@ movie_titles = [
 ]
 
 rockstar_names.each_with_index do |name, index|
-  # Generate a unique email for each rockstar
   email = index.zero? ? 'max@example.com' : "#{name.downcase.gsub(' ', '_')}@example.com"
   name = index.zero? ? 'Max Groenlund' : name
 
@@ -156,6 +155,7 @@ rockstar_names.each_with_index do |name, index|
 
     prepared_data = api_response.except('Ratings', 'Response')
     prepared_data['user_id'] = user.id
+    prepared_data['review'] = Faker::Hipster.paragraph(sentence_count: 19)
 
     # Check if the movie already exists
     movie = Movie.find_or_initialize_by(Title: prepared_data['Title'], user_id: user.id)

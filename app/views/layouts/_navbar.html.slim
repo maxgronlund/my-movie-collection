@@ -4,10 +4,11 @@ nav.navbar.navbar-expand-lg.bg-body-tertiary.sticky-top
     button.navbar-toggler[type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation"]
       span.navbar-toggler-icon
     .collapse.navbar-collapse#navbarNavAltMarkup
-      - if user_signed_in?
-        .navbar-nav.me-auto
+      .navbar-nav.me-auto
+        = link_to 'Users', users_path, class: 'nav-item nav-link'
+        - if user_signed_in?
           = link_to 'My Movies', user_movies_path(current_user), class: 'nav-item nav-link'
-          = link_to 'Users', users_path, class: 'nav-item nav-link'
+        
 
       .d-flex
         - if user_signed_in?

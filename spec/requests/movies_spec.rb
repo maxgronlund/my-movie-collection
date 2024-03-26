@@ -21,7 +21,7 @@ RSpec.describe '/movies', type: :request do
   # adjust the attributes here as well.
   let(:user) { create(:user) }
   let(:movie) { create(:movie, user:) }
-  let(:movies) { FactoryBot.create_list(:movie, 5, user:) }
+  let(:movies) { create_list(:movie, 5, user:) }
   let(:valid_attributes) { { review: 'fo' } }
 
   let(:invalid_attributes) do

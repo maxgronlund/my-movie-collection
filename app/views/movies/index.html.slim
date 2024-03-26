@@ -3,7 +3,6 @@
     i.fas.fa-plus
     |  Create movie
 .container.mt-2
-
   table.table.table-hover.table-striped
     thead.table-dark
       tr
@@ -21,7 +20,12 @@
           td = movie.Director
           td = movie.Writer
           td = movie.Actors
-          td = link_to 'Show', user_movie_path(movie.user, movie), class: 'btn btn-sm btn-primary'
-          td = link_to 'Edit', edit_user_movie_path(movie.user, movie), class: 'btn btn-sm btn-secondary'
-          td = button_to 'Destroy', user_movie_path(movie.user, movie), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn btn-sm btn-danger'
-  
+          td = link_to 'Show', user_movie_path(movie.user, movie), class: 'btn btn-sm btn-outline-primary', id: "show_movie_#{movie.id}"
+          td = link_to 'Edit', edit_user_movie_path(movie.user, movie), class: 'btn btn-sm btn-outline-secondary', id: "edit_movie_#{movie.id}"
+          td 
+            = button_to 'Destroy', 
+              user_movie_path(movie.user, movie), 
+              method: :delete, 
+              data: { turbo_method: :delete, turbo_confirm: 'Are you sure?'}, 
+              class: 'btn btn-sm btn-outline-danger', 
+              id: "delete_movie_#{movie.id}"

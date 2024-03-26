@@ -27,6 +27,7 @@ class CreateMovies < ActiveRecord::Migration[7.1]
       t.string :BoxOffice
       t.string :Production
       t.string :Website
+      t.text :review
 
       t.timestamps
     end

@@ -58,6 +58,8 @@ gem 'devise', '~> 4.9.3'
 # Use httparty of HTTP requests
 gem 'httparty', '~> 0.21.0'
 
+# Create fake data for testing and movies
+gem 'faker'
 # gem 'loggable_activity', '~> 0.1.54', path: '/Users/maxgronlund/Documents/Max/open-source/LoggableActivity'
 
 group :development, :test do
@@ -68,7 +70,6 @@ group :development, :test do
   gem 'brakeman'
   gem 'bundler-audit'
   gem 'factory_bot_rails', '~> 6.4', '>= 6.4.3'
-  gem 'faker'
   gem 'rspec-rails'
   gem 'rubocop', '~> 1.59'
   gem 'rubocop-discourse', '~> 3.6'
