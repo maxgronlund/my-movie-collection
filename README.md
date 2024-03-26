@@ -2,17 +2,17 @@
 
 
 This is the solution for a code challenge by Træls.<br/> 
-There is way more features and styling that required.
-I just had a fun time, and like to **practicing** my skills, so please forgive me for doing stuff I was not asked to do.
+There are more features and styling than required..
+I had a fun time and liked to practice my skills, so please forgive me for doing stuff I was not asked to do.
 
 ### Prerequisites
 - Ruby 3.2
 - Rails 7
 - Postgresql
-- Google Chriome
+- Google Chrome
 
-Nice to have
-- direnv, for environment variables
+Nice to Have
+- direnv, for environment Variables
 - asdf, for version management
 
 ### Configuration
@@ -21,7 +21,7 @@ Environment variables
 export OMDB_API_KEY="xxxxxxxxxx"
 export THEMOVIEDB_API_KEY="xxxxxxxxxx"
 ```
-You can request api keys from me or get them for free at 
+You can request API keys from me or get them for free at 
 
 ### Development<br/>
 To add a comment summarizing the current schema to the top or bottom of each model
@@ -59,7 +59,7 @@ $ bundle exec rspec .
 
 
 ### Acknowledgement
-- Avatars is fetched from [dicebear](https://www.dicebear.com/styles/adventurer/)
+- Avatars are fetched from [dicebear](https://www.dicebear.com/styles/adventurer/)
 
 ### Notes
-- DB fields with uppercase names is due to a one to one relation between omdb payloads and the movie model.
+- DB fields with uppercase names are due to a one-to-one relation between omdb payloads and the movie model.
