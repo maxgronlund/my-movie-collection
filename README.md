@@ -48,6 +48,7 @@ $ rake db:create
 $ rake db:migrate
 $ rake db:seed
 ```
+Be patient, the seed might tage a little while to complete.
 ### Test
 
 How to run the test suite
