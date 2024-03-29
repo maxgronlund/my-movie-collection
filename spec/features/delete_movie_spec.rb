@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.feature 'Delete Movie', type: :feature, js: true do
   let(:user) { FactoryBot.create(:user) }
-  let!(:movies) { FactoryBot.create_list(:movie, 5, user:) }
+  let!(:movies) { FactoryBot.create_list(:movie, 5, user:, Title: "Some title") }
 
   scenario 'User deletes a movie' do
     visit new_user_session_path

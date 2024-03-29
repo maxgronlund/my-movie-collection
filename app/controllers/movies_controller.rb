@@ -32,6 +32,7 @@ class MoviesController < ApplicationController
       redirect_to_new_movie_with_error(api_response['Error'])
     else
       create_movie(api_response)
+
     end
   end
 

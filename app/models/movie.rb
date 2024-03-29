@@ -35,5 +35,9 @@
 #
 class Movie < ApplicationRecord
   belongs_to :user
+  has_many :youtube_trailers
+  accepts_nested_attributes_for :youtube_trailers
+
   validates :Title, presence: true
+
 end

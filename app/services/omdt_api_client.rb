@@ -1,36 +1,79 @@
 # frozen_string_literal: true
 
-# OMDB API Client, responsible for fetching movie data from the OMDB API
+require 'httparty'
+
+# TMDb API Client, responsible for fetching movie data from the TMDb API
 module OmdtApiClient
-  require 'httparty'
   include HTTParty
-  def self.fetch_movie(_id)
-    # https://api.themoviedb.org/3/movie/762/videos?api_key=a85ed02d93ffe649195bedfffe014b20
-    videos_response = HTTParty.get("https://api.themoviedb.org/3/movie/#{movie_id}/videos", {
-                                     query: {
-                                       api_key:
-                                     }
-                                   })
+  base_uri 'https://api.themoviedb.org/3'
 
-    # Filter for the trailer video type
-    trailer = videos_response['results'].find { |video| video['type'] == 'Trailer' }
-
-    trailer['key'] if trailer
+  # Adds YouTube trailers to a given movie
+  def self.add_youtube_trailers(movie)
+    return if api_key.empty?
+    trailer_attributes = youtube_trailers_attributes(movie.Title)
+    trailer_attributes.each do |trailer_attr|
+      unless movie.youtube_trailers.exists?(key: trailer_attr[:key])
+        movie.youtube_trailers.build(trailer_attr)
+      end
+    end
+    movie.save
   end
 
-  base_uri 'http://www.omdbapi.com/'
+  private
 
-  def self.fetch_movie_by_form_inputs(title:, plot: 'short')
-    api_key = ENV.fetch('THEMOVIEDB_API_KEY', nil)
-    options = { query: { t: title, plot:, apikey: api_key } }
-
-    response = get('/', options)
-
-    # Ensure to handle errors and check response code
-    response.parsed_response if response.success?
+  # Builds an array of trailer attributes for a given movie title
+  def self.youtube_trailers_attributes(movie_title)
+  
+    by_title(movie_title).map do |trailer|
+      {
+        name: trailer["name"],
+        key: trailer["key"],
+        backdrop_path: trailer["backdrop_path"] 
+      }
+    end
   end
 
+  # Searches for movies by title
+  def self.by_title(movie_title)
+    response = get("/search/movie", query: { api_key: api_key, query: movie_title })
+
+    return nil unless response.code == 200 # Checking response code for success
+
+    results = JSON.parse(response.body)['results']
+    return nil if results.empty?
+
+    results = results.map { |movie| trailers(movie['id'], movie['backdrop_path']) }
+    results.reject(&:nil?).flatten
+  end
+
+  # Retrieves trailers for a given movie
+  def self.trailers(movie_id, backdrop_path = nil)
+    return nil unless movie_id
+
+    response = get("/movie/#{movie_id}/videos", query: { api_key: api_key })
+    return nil unless response.code == 200 # Checking response code for success
+
+    videos = JSON.parse(response.body)['results']
+    youtube_trailers = extract_official_youtube_trailers(videos)
+    return nil if youtube_trailers.empty?
+    youtube_trailers = clean_and_uniq_videos(youtube_trailers)
+    youtube_trailers.each { |trailer| trailer['backdrop_path'] = backdrop_path }
+  end
+
+  # Extracts official YouTube trailers from a list of videos
+  def self.extract_official_youtube_trailers(videos)
+    official_youtube_videos =
+      videos.filter_map do |video|
+        video if video['site'] == 'YouTube' && video['type'] == 'Trailer' && video['official']
+      end
+  end
+
+  def self.clean_and_uniq_videos(trailers)
+    trailers.reject(&:empty?)
+  end
+
+  # Retrieves the API key from environment variables
   def self.api_key
-    ENV.fetch('OMDB_API_KEY', nil)
+    ENV.fetch('THEMOVIEDB_API_KEY', '')
   end
 end

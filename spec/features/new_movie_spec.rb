@@ -11,7 +11,7 @@ RSpec.feature 'New Movie', type: :feature do
     let(:mock_response) { File.read(omdb_response_path) }
 
     before do
-      stub_request(:get, 'http://www.omdbapi.com/?apikey=d661ea05&plot=short&t=20Matrix')
+      stub_request(:get, "http://www.omdbapi.com/?apikey=#{api_key}&plot=short&t=20Matrix")
         .with(
           headers: {
             'Accept' => '*/*',

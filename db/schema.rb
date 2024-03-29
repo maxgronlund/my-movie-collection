@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_22_193135) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_29_095558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,5 +59,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_193135) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "youtube_trailers", force: :cascade do |t|
+    t.string "name"
+    t.string "key"
+    t.string "backdrop_path"
+    t.bigint "movie_id", null: false
+    t.index ["movie_id"], name: "index_youtube_trailers_on_movie_id"
+  end
+
   add_foreign_key "movies", "users"
+  add_foreign_key "youtube_trailers", "movies"
 end

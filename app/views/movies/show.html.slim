@@ -48,3 +48,16 @@ section.bg-black.text-white.py-5
 .container.mt-4 
   .fs-4 Review
   = @movie.review
+- unless @movie.youtube_trailers.empty?
+  .container.mt-2
+    .fs-4 Trailers
+    table.table.table-hover.table-striped
+      thead.table-dark
+        tr
+          th Title
+          th Watch on Youtube
+      tbody
+        - @movie.youtube_trailers.each do |trailer|
+          tr
+            td = trailer.name
+            td = link_to trailer.name, "https://www.youtube.com/watch?v=#{trailer.key}", target: '_blank', class: 'text-decoration-none'
