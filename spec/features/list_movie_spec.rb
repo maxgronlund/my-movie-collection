@@ -17,7 +17,7 @@ RSpec.feature 'Show Movie', type: :feature, js: true do
     expect(page).to have_content(movie.Actors)
     expect(Movie.count).to eq(5)
 
-    click_link('My Movies') 
+    click_link('My Movies')
     find("#edit_movie_#{movie.id}").click
     expect(page).to have_content('Edit movie')
   end
