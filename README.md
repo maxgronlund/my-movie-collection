@@ -19,9 +19,7 @@ Nice to Have
 Environment variables
 ```
 export OMDB_API_KEY="xxxxxxxxxx"
-export THEMOVIEDB_API_KEY="xxxxxxxxxx"
 ```
-You can request API keys from me or get them for free at 
 
 ### Development<br/>
 To add a comment summarizing the current schema to the top or bottom of each model
